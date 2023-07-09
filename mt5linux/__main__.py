@@ -153,14 +153,17 @@ def main():
     #
     wine_cmd=args.wine
     win_python_path=args.python
-    server_dir=args.server
+    server_dir= args.server
     server_code='server.py'
     port=args.port
     host=args.host
     #
-    Popen(['mkdir','-p',server_dir],shell=True).wait()
+
+    Popen('mkdir -p ' + server_dir,shell=True).wait()
+
     __generate_server_classic(os.path.join(server_dir,server_code))
-    Popen([
+
+    wine_cmd_for_popen = [
             wine_cmd,
             os.path.join(win_python_path),
             os.path.join(server_dir,server_code),
@@ -168,8 +171,11 @@ def main():
             host,
             '-p',
             str(port),
-        ],shell=True,
-    ).wait()
+        ]
+    wine_cmd_for_popen = ' '.join(wine_cmd_for_popen)
+
+    Popen(wine_cmd_for_popen ,shell=True,).wait()
+
 
 
 if __name__ == '__main__':
